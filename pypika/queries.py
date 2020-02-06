@@ -512,6 +512,7 @@ class QueryBuilder(Selectable, Term):
         wrap_union_queries=True,
         wrapper_cls=ValueWrapper,
         immutable=True,
+        auto_star=False
     ):
         super(QueryBuilder, self).__init__(None)
 
@@ -557,6 +558,7 @@ class QueryBuilder(Selectable, Term):
         self._wrapper_cls = wrapper_cls
 
         self.immutable = immutable
+        self._auto_star = auto_star
 
     def __copy__(self):
         newone = type(self).__new__(type(self))
@@ -1049,6 +1051,9 @@ class QueryBuilder(Selectable, Term):
 
     def get_sql(self, with_alias=False, subquery=False, **kwargs):
         self._set_kwargs_defaults(kwargs)
+
+        if not self._selects and self._auto_star:
+            self._select_field_str('*')
 
         if not (
             self._selects
