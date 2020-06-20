@@ -965,7 +965,7 @@ class QueryBuilder(Selectable, Term):
 
     def do_join(self, join):
         base_tables = self._from + [self._update_table] + self._with
-        join.validate(base_tables, self._joins)
+        #join.validate(base_tables, self._joins)
 
         table_in_query = any(
             isinstance(clause, Table) and join.item in base_tables
